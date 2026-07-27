@@ -15,18 +15,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Clear old files/folders and extract zip
+      - name: Clear old files/folders, extract zip, and restore core config
         run: |
-          # 1. Move the zip out of the way
+          # 1. Move the zip out of the workspace to /tmp
           mv dousette.org.zip /tmp/dousette.org.zip
 
-          # 2. Delete all root files and subdirectories EXCEPT protected items
-          find . -maxdepth 1 ! -name '.' ! -name '.git' ! -name '.github' ! -name 'CNAME' ! -name '.nojekyll' -exec rm -rf {} +
+          # 2. Delete all root files and subdirectories (preserves .git and .github)
+          find . -maxdepth 1 ! -name '.' ! -name '.git' ! -name '.github' -exec rm -rf {} +
 
           # 3. Extract the new zip contents into the root directory
           unzip -o /tmp/dousette.org.zip -d ./
 
-          # 4. Clean up the temporary zip file
+          # 4. Guarantee critical GitHub Pages files always exist
+          echo "dousette.org" > CNAME
+          touch .nojekyll
+
+          # 5. Clean up the temporary zip file
           rm /tmp/dousette.org.zip
 
       - name: Commit and push changes
@@ -34,6 +38,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
+          # Stage all changes (including deletions)
           git add -A
           git diff-index --quiet HEAD || git commit -m "Auto-unpack and sync dousette.org.zip"
           git push
