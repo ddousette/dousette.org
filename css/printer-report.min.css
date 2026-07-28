@@ -34,12 +34,14 @@ html {
   font-size: var(--font-size);
   color: var(--ink-color);
   line-height: var(--line-height);
+  overflow-x: auto;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  min-width: 100vw;
   background-image: 
     radial-gradient(circle at calc(var(--strip-width) / 2) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
     radial-gradient(circle at calc(100% - (var(--strip-width) / 2)) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
@@ -52,21 +54,24 @@ body {
     100% 100%,
     100% 100%,
     100% calc(2 * var(--line-height));
+  background-attachment: global;
 }
 
 #platen-feed-wrapper {
   transition: transform 0.05s cubic-bezier(0, 0, 0.2, 1);
   will-change: transform;
+  width: 100%;
 }
 
 .report-container {
-  width: calc(100% - (2 * var(--strip-width)) - 40px);
+  width: calc(100% - (2 * var(--strip-width)) - 20px);
   max-width: 1400px;
   margin: 0 auto;
   padding-top: 2rem;
   padding-bottom: 5rem;
   position: relative;
   z-index: 1;
+  overflow-x: auto; /* Allows table to scroll internally if screen is tiny */
 }
 
 .printed-line {
@@ -128,10 +133,11 @@ tr.printed-line {
   padding-left: 1ch;
 }
 
+/* Post-it / Navigation Container */
 .nav-clip-container {
   position: fixed;
   top: 0;
-  right: 80px;
+  right: 50px;
   z-index: 9999;
   font-family: 'Gochi Hand', cursive;
 }
@@ -165,10 +171,10 @@ tr.printed-line {
 .post-it {
   position: relative;
   top: 8px;
-  width: 140px;
+  width: 120px;
   background: #fffa8d;
   color: #111;
-  padding: 15px 10px 10px 10px;
+  padding: 12px 8px 8px 8px;
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
   transform: rotate(1.5deg);
   transition: all 0.25s ease-in-out;
@@ -176,7 +182,7 @@ tr.printed-line {
 }
 
 .post-it-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   text-align: center;
   margin-bottom: 5px;
@@ -207,7 +213,7 @@ tr.printed-line {
 
 .nav-clip-container:focus-within .post-it,
 .nav-clip-container:hover .post-it {
-  width: 180px;
+  width: 160px;
   transform: rotate(0) translateY(5px);
   box-shadow: 4px 8px 15px rgba(0, 0, 0, 0.4);
 }
@@ -217,12 +223,13 @@ tr.printed-line {
   display: block;
 }
 
-/* Fully Dynamic Matrix Image Styles */
+/* Image Styles */
 .matrix-img-container {
   position: relative;
   display: block;
   margin: 1rem auto;
   max-width: 600px;
+  width: 100%;
   height: auto !important;
 }
 
@@ -233,4 +240,37 @@ tr.printed-line {
   image-rendering: pixelated;
   filter: grayscale(100%) contrast(140%) brightness(95%);
   mix-blend-mode: multiply;
+}
+
+/* Mobile & Small Screen Adaptations */
+@media screen and (max-width: 768px) {
+  :root {
+    --strip-width: 25px; /* Narrower tractor margins on phone screens */
+    --hole-size: 7px;
+    --font-size: 0.85rem; /* Slightly smaller font to fit wider lines */
+    --line-height: 1rem;
+  }
+
+  .nav-clip-container {
+    right: 32px; /* Pull Post-it inward on small screens */
+  }
+
+  .post-it {
+    width: 90px;
+    padding: 8px 5px;
+  }
+
+  .post-it-title {
+    font-size: 1rem;
+  }
+
+  .nav-clip-container:focus-within .post-it,
+  .nav-clip-container:hover .post-it {
+    width: 130px;
+  }
+
+  div.printed-line,
+  p.printed-line {
+    font-size: var(--font-size);
+  }
 }
