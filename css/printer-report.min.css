@@ -34,7 +34,7 @@ html {
   font-size: var(--font-size);
   color: var(--ink-color);
   line-height: var(--line-height);
-  -webkit-text-size-adjust: 100%; /* Prevents Android text inflation algorithms */
+  -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
@@ -44,7 +44,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
-  overflow-x: hidden; /* Guards against horizontal scrolling */
+  overflow-x: hidden;
   background-image: 
     radial-gradient(circle at calc(var(--strip-width) / 2) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
     radial-gradient(circle at calc(100% - (var(--strip-width) / 2)) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
@@ -79,6 +79,7 @@ body {
 .printed-line {
   opacity: 0;
   height: var(--line-height);
+  overflow: hidden; /* Clips horizontal overflow if string exceeds maximum character width */
 }
 
 .printed-line.printed {
@@ -245,32 +246,32 @@ tr.printed-line {
   transform: translate3d(0, 0, 0);
 }
 
-/* Mobile Adjustments */
+/* Mobile & Small Screen Adaptations */
 @media screen and (max-width: 768px) {
   :root {
-    --strip-width: 20px;
-    --hole-size: 6px;
-    --hole-spacing: 16px;
-    /* Scale font proportionally to screen width so full lines fit cleanly */
-    --font-size: 2.6vw;
-    --line-height: 2.8vw;
+    --strip-width: 16px;
+    --hole-size: 5px;
+    --hole-spacing: 14px;
+    /* Scale font so long strings (up to 132 chars) fit perfectly in viewport */
+    --font-size: 1.85vw;
+    --line-height: 2.2vw;
   }
 
   .nav-clip-container {
-    right: 22px;
+    right: 12px; /* Lock Post-it to visible top-right edge */
   }
 
   .post-it {
-    width: 70px;
-    padding: 5px 3px;
+    width: 65px;
+    padding: 4px 2px;
   }
 
   .post-it-title {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 
   .nav-clip-container:focus-within .post-it,
   .nav-clip-container:hover .post-it {
-    width: 120px;
+    width: 110px;
   }
 }
