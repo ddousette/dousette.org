@@ -24,6 +24,18 @@
     </div>
 </div>
 
+<!-- SVG FILTER: CONVERTS OFF-WHITE BACKGROUND TO FULL TRANSPARENCY -->
+<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+  <filter id="matrix-ink-threshold">
+    <!-- Boost contrast to convert mid-grays into deep ink lines & off-white into pure white -->
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="3" intercept="-0.8"/>
+      <feFuncG type="linear" slope="3" intercept="-0.8"/>
+      <feFuncB type="linear" slope="3" intercept="-0.8"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
 <!-- PLATEN WRAPPER FOR PUSHING THE PAPER UPWARDS -->
 <div id="platen-feed-wrapper">
     <div class="report-container">
@@ -132,7 +144,7 @@
 
     lines.forEach((line, index) => {
         setTimeout(() => {
-            // Reveal text line/image
+            // Reveal text line
             line.classList.add('printed');
 
             // Shift entire paper UP by 1 step/line
