@@ -32,6 +32,14 @@
             <li><a href="#sysin">• //SYSIN DD</a></li>
             <li><a href="#summary">• RECON SUMMARY</a></li>
             <li><a href="#audit">• AUDIT LOGS</a></li>
+            <li><a href="#errors">• ERROR ANALYSIS</a></li>
+            <li><a href="#reg01">• REGION 01</a></li>
+            <li><a href="#reg02">• REGION 02</a></li>
+            <li><a href="#reg03">• REGION 03</a></li>
+            <li><a href="#reg04">• REGION 04</a></li>
+            <li><a href="#reg05">• REGION 05</a></li>
+            <li><a href="#reg06">• REGION 06</a></li>
+            <li><a href="#forth">• FORTH STATUS</a></li>
             <li><a href="#endjob">• END OF JOB</a></li>
         </ul>
     </div>
@@ -40,7 +48,6 @@
 <!-- SVG FILTER: CONVERTS OFF-WHITE BACKGROUND TO FULL TRANSPARENCY -->
 <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
   <filter id="matrix-ink-threshold">
-    <!-- Boost contrast to convert mid-grays into deep ink lines & off-white into pure white -->
     <feComponentTransfer>
       <feFuncR type="linear" slope="3" intercept="-0.8"/>
       <feFuncG type="linear" slope="3" intercept="-0.8"/>
@@ -53,10 +60,6 @@
 <div id="platen-feed-wrapper">
     <div class="report-container">
         <div class="printed-section">
-            <!-- LINE MATRIX PRINTER AVATAR IMAGE -->
-        <!--    <div class="matrix-img-container printed-line">
-                <img src="images/Gemini_Generated_Image_n43bg0n43bg0n43b.png" alt="Matrix Printed Avatar" class="matrix-print-img">
-            </div>-->
 
             <div class="printed-line">1IEBGENER SYSTEM GENERATED REPORT - DATE: 2026-07-27 TIME: 19:15:32</div>
             <div class="printed-line">JOB NAME: DAILY_SALES_RECON      JOB ID: JOB04821      CLASS: A</div>
@@ -78,37 +81,37 @@
             <div class="printed-line">========================================================================================================================</div>
             
             <table class="report-table">
-                <tr class="printed-line">
+                <tr class="printed-line" id="reg01">
                     <td class="col-label">REGION 01 TOTALS</td>
                     <td class="col-leader">....................................................................................................</td>
                     <td class="col-amount">$1,234,567.89</td>
                     <td class="col-flag"></td>
                 </tr>
-                <tr class="printed-line">
+                <tr class="printed-line" id="reg02">
                     <td class="col-label">REGION 02 TOTALS</td>
                     <td class="col-leader">....................................................................................................</td>
                     <td class="col-amount">$  987,654.32</td>
                     <td class="col-flag"></td>
                 </tr>
-                <tr class="printed-line">
+                <tr class="printed-line" id="reg03">
                     <td class="col-label">REGION 03 TOTALS</td>
                     <td class="col-leader">....................................................................................................</td>
                     <td class="col-amount">$   12,345.67</td>
                     <td class="col-flag">(ERR)</td>
                 </tr>
-                <tr class="printed-line">
+                <tr class="printed-line" id="reg04">
                     <td class="col-label">REGION 04 TOTALS</td>
                     <td class="col-leader">....................................................................................................</td>
                     <td class="col-amount">$5,678,901.23</td>
                     <td class="col-flag"></td>
                 </tr>
-                <tr class="printed-line">
+                <tr class="printed-line" id="reg05">
                     <td class="col-label">REGION 05 TOTALS</td>
                     <td class="col-leader">....................................................................................................</td>
                     <td class="col-amount">$  432,109.87</td>
                     <td class="col-flag"></td>
                 </tr>
-                <tr class="printed-line">
+                <tr class="printed-line" id="reg06">
                     <td class="col-label">REGION 06 TOTALS</td>
                     <td class="col-leader">....................................................................................................</td>
                     <td class="col-amount">$8,901,234.56</td>
@@ -131,11 +134,17 @@
             <div class="printed-line">CPU TIME: 00:00:02.14    ELAPSED TIME: 00:00:05.80    EXCP COUNT: 1420</div>
             <div class="printed-line">PAGE READS: 0            PAGE WRITES: 0               SWAPS: 0</div>
             <div class="printed-line"> </div>
-            <div class="printed-line">SECTION 3: ERROR ANALYSIS DETAIL</div>
+            <div class="printed-line" id="errors">SECTION 3: ERROR ANALYSIS DETAIL</div>
             <div class="printed-line">========================================================================================================================</div>
             <div class="printed-line">ERR001: REGION 03 CHECKSUM MISMATCH ON BATCH #9401</div>
             <div class="printed-line">        EXPECTED: $12,345.67  |  ACTUAL CALC: $12,340.00  |  DIFF: $5.67</div>
             <div class="printed-line">        ACTION: ROUTED TO OPERATOR QUEUE [MVS.ERR.HOLD] FOR MANUAL RECONCILIATION</div>
+            <div class="printed-line"> </div>
+            <div class="printed-line" id="forth">SECTION 4: FORTH BUILD ENGINE STATUS</div>
+            <div class="printed-line">========================================================================================================================</div>
+            <div class="printed-line">DICTIONARY SPACE ALLOCATED  .................................................................................... 65536 BYTES</div>
+            <div class="printed-line">DICTIONARY SPACE USED       .................................................................................... 12408 BYTES</div>
+            <div class="printed-line">STATIC BUILD STATUS         .................................................................................... SUCCESSFUL</div>
             <div class="printed-line"> </div>
             <div class="printed-line" id="endjob">SYSTEM STATUS: NOMINAL (WITH WARNINGS)</div>
             <div class="printed-line">END OF JOB.</div>
@@ -144,27 +153,22 @@
 </div>
 
 <script>
-    const platenStepSpeed = 80; // ms per line step
+    const platenStepSpeed = 80;
     const wrapper = document.getElementById('platen-feed-wrapper');
     const lines = document.querySelectorAll('.printed-line');
     
-    // Line height in pixels (1.2rem @ 16px root = 19.2px)
     const lineHeightPx = parseFloat(getComputedStyle(document.documentElement).fontSize) * 1.2;
 
-    // Start with the top of the report pushed down toward the platen (bottom of screen)
     let currentYOffset = window.innerHeight - 150;
     wrapper.style.transform = `translateY(${currentYOffset}px)`;
 
     lines.forEach((line, index) => {
         setTimeout(() => {
-            // Reveal text line
             line.classList.add('printed');
 
-            // Shift entire paper UP by 1 step/line
             currentYOffset -= lineHeightPx;
             wrapper.style.transform = `translateY(${Math.max(0, currentYOffset)}px)`;
 
-            // Reset wrapper transform once animation completes to allow standard scrolling
             if (index === lines.length - 1) {
                 setTimeout(() => {
                     wrapper.style.transform = 'none';

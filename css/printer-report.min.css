@@ -79,7 +79,7 @@ body {
 .printed-line {
   opacity: 0;
   height: var(--line-height);
-  overflow: hidden; /* Clips horizontal overflow if string exceeds maximum character width */
+  overflow: hidden;
 }
 
 .printed-line.printed {
@@ -175,13 +175,25 @@ tr.printed-line {
   position: relative;
   top: 8px;
   width: 120px;
+  max-height: 75vh;        /* Keeps Post-it contained inside the viewport */
+  overflow-y: auto;        /* Allows scrolling if items exceed max height */
+  overflow-x: hidden;
   background: #fffa8d;
   color: #111;
   padding: 12px 8px 8px 8px;
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
   transform: rotate(1.5deg);
-  transition: all 0.25s ease-in-out;
+  transition: width 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
   cursor: pointer;
+}
+
+/* Custom subtle scrollbar for the Post-it note */
+.post-it::-webkit-scrollbar {
+  width: 4px;
+}
+.post-it::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
 }
 
 .post-it-title {
@@ -216,7 +228,7 @@ tr.printed-line {
 
 .nav-clip-container:focus-within .post-it,
 .nav-clip-container:hover .post-it {
-  width: 160px;
+  width: 170px;
   transform: rotate(0) translateY(5px);
   box-shadow: 4px 8px 15px rgba(0, 0, 0, 0.4);
 }
@@ -252,13 +264,12 @@ tr.printed-line {
     --strip-width: 16px;
     --hole-size: 5px;
     --hole-spacing: 14px;
-    /* Scale font so long strings (up to 132 chars) fit perfectly in viewport */
     --font-size: 1.85vw;
     --line-height: 2.2vw;
   }
 
   .nav-clip-container {
-    right: 12px; /* Lock Post-it to visible top-right edge */
+    right: 12px;
   }
 
   .post-it {
@@ -272,6 +283,6 @@ tr.printed-line {
 
   .nav-clip-container:focus-within .post-it,
   .nav-clip-container:hover .post-it {
-    width: 110px;
+    width: 130px;
   }
 }
