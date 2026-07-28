@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IBM Line Printer - Scrollable Continuous Form</title>
     
-    <!-- Local Minified Stylesheet (Includes Local Fonts) -->
+    <!-- Local Minified Stylesheet -->
     <link rel="stylesheet" href="css/printer-report.min.css">
 </head>
 <body>
@@ -28,7 +28,11 @@
 <div id="platen-feed-wrapper">
     <div class="report-container">
         <div class="printed-section">
-			<div class="matrix-img-container"><img src="images/Gemini_Generated_Image_n43bg0n43bg0n43b.png" alt="Matrix Printed Avatar" class="matrix-print-img"></div>
+            <!-- LINE MATRIX PRINTER AVATAR IMAGE -->
+            <div class="matrix-img-container printed-line">
+                <img src="images/Gemini_Generated_Image_n43bg0n43bg0n43b.png" alt="Matrix Printed Avatar" class="matrix-print-img">
+            </div>
+
             <div class="printed-line">1IEBGENER SYSTEM GENERATED REPORT - DATE: 2026-07-27 TIME: 19:15:32</div>
             <div class="printed-line">JOB NAME: DAILY_SALES_RECON      JOB ID: JOB04821      CLASS: A</div>
             <div class="printed-line">------------------------------------------------------------------------------------------------------------------------</div>
@@ -128,10 +132,10 @@
 
     lines.forEach((line, index) => {
         setTimeout(() => {
-            // Reveal text line
+            // Reveal text line/image
             line.classList.add('printed');
 
-            // Shift entire paper UP by 1 line
+            // Shift entire paper UP by 1 step/line
             currentYOffset -= lineHeightPx;
             wrapper.style.transform = `translateY(${Math.max(0, currentYOffset)}px)`;
 
