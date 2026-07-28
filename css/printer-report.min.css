@@ -34,8 +34,8 @@ html {
   font-size: var(--font-size);
   color: var(--ink-color);
   line-height: var(--line-height);
-  margin: 0;
-  padding: 0;
+  -webkit-text-size-adjust: 100%; /* Prevents Android text inflation algorithms */
+  text-size-adjust: 100%;
 }
 
 body {
@@ -44,8 +44,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
-  background-color: var(--greenbar-bg);
-  /* Greenbar pattern covers the entire canvas seamlessly */
+  overflow-x: hidden; /* Guards against horizontal scrolling */
   background-image: 
     radial-gradient(circle at calc(var(--strip-width) / 2) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
     radial-gradient(circle at calc(100% - (var(--strip-width) / 2)) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
@@ -58,7 +57,6 @@ body {
     100% 100%,
     100% 100%,
     100% calc(2 * var(--line-height));
-  background-repeat: repeat-y;
 }
 
 #platen-feed-wrapper {
@@ -68,15 +66,11 @@ body {
 }
 
 .report-container {
-  /* Allows container to expand to content width on mobile without clipping */
-  width: min-content;
-  min-width: calc(100% - (2 * var(--strip-width)));
+  width: calc(100% - (2 * var(--strip-width)) - 20px);
   max-width: 1400px;
   margin: 0 auto;
   padding-top: 2rem;
   padding-bottom: 5rem;
-  padding-left: var(--strip-width);
-  padding-right: var(--strip-width);
   position: relative;
   z-index: 1;
   box-sizing: border-box;
@@ -145,7 +139,7 @@ tr.printed-line {
 .nav-clip-container {
   position: fixed;
   top: 0;
-  right: 20px;
+  right: 50px;
   z-index: 9999;
   font-family: 'Gochi Hand', cursive;
 }
@@ -231,7 +225,7 @@ tr.printed-line {
   display: block;
 }
 
-/* Dynamic Image Styles */
+/* Image Styles */
 .matrix-img-container {
   position: relative;
   display: block;
@@ -254,27 +248,29 @@ tr.printed-line {
 /* Mobile Adjustments */
 @media screen and (max-width: 768px) {
   :root {
-    --strip-width: 25px;
-    --hole-size: 7px;
-    --font-size: 0.9rem;
-    --line-height: 1.1rem;
+    --strip-width: 20px;
+    --hole-size: 6px;
+    --hole-spacing: 16px;
+    /* Scale font proportionally to screen width so full lines fit cleanly */
+    --font-size: 2.6vw;
+    --line-height: 2.8vw;
   }
 
   .nav-clip-container {
-    right: 15px;
+    right: 22px;
   }
 
   .post-it {
-    width: 85px;
-    padding: 6px 4px;
+    width: 70px;
+    padding: 5px 3px;
   }
 
   .post-it-title {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   .nav-clip-container:focus-within .post-it,
   .nav-clip-container:hover .post-it {
-    width: 130px;
+    width: 120px;
   }
 }
