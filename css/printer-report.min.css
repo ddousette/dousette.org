@@ -34,15 +34,18 @@ html {
   font-size: var(--font-size);
   color: var(--ink-color);
   line-height: var(--line-height);
+  margin: 0;
+  padding: 0;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  min-height: 100dvh; /* WebKit dynamic viewport height fix */
+  min-height: 100dvh;
   width: 100%;
-  overflow-x: hidden; /* Prevents scrollbars on desktop caused by 100vw or fixed position elements */
+  background-color: var(--greenbar-bg);
+  /* Greenbar pattern covers the entire canvas seamlessly */
   background-image: 
     radial-gradient(circle at calc(var(--strip-width) / 2) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
     radial-gradient(circle at calc(100% - (var(--strip-width) / 2)) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
@@ -55,6 +58,7 @@ body {
     100% 100%,
     100% 100%,
     100% calc(2 * var(--line-height));
+  background-repeat: repeat-y;
 }
 
 #platen-feed-wrapper {
@@ -64,13 +68,18 @@ body {
 }
 
 .report-container {
-  width: calc(100% - (2 * var(--strip-width)) - 20px);
+  /* Allows container to expand to content width on mobile without clipping */
+  width: min-content;
+  min-width: calc(100% - (2 * var(--strip-width)));
   max-width: 1400px;
   margin: 0 auto;
   padding-top: 2rem;
   padding-bottom: 5rem;
+  padding-left: var(--strip-width);
+  padding-right: var(--strip-width);
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 .printed-line {
@@ -136,7 +145,7 @@ tr.printed-line {
 .nav-clip-container {
   position: fixed;
   top: 0;
-  right: 50px;
+  right: 20px;
   z-index: 9999;
   font-family: 'Gochi Hand', cursive;
 }
@@ -222,7 +231,7 @@ tr.printed-line {
   display: block;
 }
 
-/* Image Styles */
+/* Dynamic Image Styles */
 .matrix-img-container {
   position: relative;
   display: block;
@@ -239,38 +248,33 @@ tr.printed-line {
   image-rendering: pixelated;
   filter: grayscale(100%) contrast(140%) brightness(95%);
   mix-blend-mode: multiply;
-  transform: translate3d(0, 0, 0); /* Forces iOS WebKit hardware acceleration layer */
+  transform: translate3d(0, 0, 0);
 }
 
-/* Mobile & Small Screen Adaptations */
+/* Mobile Adjustments */
 @media screen and (max-width: 768px) {
   :root {
-    --strip-width: 25px; /* Narrower tractor margins on mobile */
+    --strip-width: 25px;
     --hole-size: 7px;
-    --font-size: 0.85rem; /* Smaller font to help fit wide tabular text */
-    --line-height: 1rem;
+    --font-size: 0.9rem;
+    --line-height: 1.1rem;
   }
 
   .nav-clip-container {
-    right: 32px; /* Pull Post-it inward on narrow viewports */
+    right: 15px;
   }
 
   .post-it {
-    width: 90px;
-    padding: 8px 5px;
+    width: 85px;
+    padding: 6px 4px;
   }
 
   .post-it-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .nav-clip-container:focus-within .post-it,
   .nav-clip-container:hover .post-it {
     width: 130px;
-  }
-
-  div.printed-line,
-  p.printed-line {
-    font-size: var(--font-size);
   }
 }
