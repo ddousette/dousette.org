@@ -34,14 +34,15 @@ html {
   font-size: var(--font-size);
   color: var(--ink-color);
   line-height: var(--line-height);
-  overflow-x: auto;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  min-width: 100vw;
+  min-height: 100dvh; /* WebKit dynamic viewport height fix */
+  width: 100%;
+  overflow-x: hidden; /* Prevents scrollbars on desktop caused by 100vw or fixed position elements */
   background-image: 
     radial-gradient(circle at calc(var(--strip-width) / 2) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
     radial-gradient(circle at calc(100% - (var(--strip-width) / 2)) calc(var(--hole-spacing) / 2), var(--hole-color) 0, var(--hole-color) calc(var(--hole-size) / 2), transparent calc(var(--hole-size) / 2 + 0.5px)),
@@ -54,7 +55,6 @@ body {
     100% 100%,
     100% 100%,
     100% calc(2 * var(--line-height));
-  background-attachment: global;
 }
 
 #platen-feed-wrapper {
@@ -71,7 +71,6 @@ body {
   padding-bottom: 5rem;
   position: relative;
   z-index: 1;
-  overflow-x: auto; /* Allows table to scroll internally if screen is tiny */
 }
 
 .printed-line {
@@ -240,19 +239,20 @@ tr.printed-line {
   image-rendering: pixelated;
   filter: grayscale(100%) contrast(140%) brightness(95%);
   mix-blend-mode: multiply;
+  transform: translate3d(0, 0, 0); /* Forces iOS WebKit hardware acceleration layer */
 }
 
 /* Mobile & Small Screen Adaptations */
 @media screen and (max-width: 768px) {
   :root {
-    --strip-width: 25px; /* Narrower tractor margins on phone screens */
+    --strip-width: 25px; /* Narrower tractor margins on mobile */
     --hole-size: 7px;
-    --font-size: 0.85rem; /* Slightly smaller font to fit wider lines */
+    --font-size: 0.85rem; /* Smaller font to help fit wide tabular text */
     --line-height: 1rem;
   }
 
   .nav-clip-container {
-    right: 32px; /* Pull Post-it inward on small screens */
+    right: 32px; /* Pull Post-it inward on narrow viewports */
   }
 
   .post-it {
