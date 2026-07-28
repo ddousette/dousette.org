@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IBM Line Printer - Scrollable Continuous Form</title>
     
+    <!-- Disable auto-scroll restoration on page refresh -->
+    <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.addEventListener('beforeunload', function () {
+            window.scrollTo(0, 0);
+        });
+        window.addEventListener('DOMContentLoaded', function () {
+            window.scrollTo(0, 0);
+        });
+    </script>
+
     <!-- Local Minified Stylesheet -->
     <link rel="stylesheet" href="css/printer-report.min.css">
 </head>
