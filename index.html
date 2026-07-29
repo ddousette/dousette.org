@@ -20,6 +20,7 @@
 
     <!-- Local Minified Stylesheet -->
     <link rel="stylesheet" href="_css/printer-report.min.css">
+	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='3' fill='%23111111'/><rect x='2' y='2' width='28' height='14' fill='%23f2fff2'/><rect x='2' y='16' width='28' height='14' fill='%23e2f3e2'/><line x1='10' y1='2' x2='10' y2='30' stroke='rgba(0,0,0,0.15)' stroke-width='1'/><circle cx='6' cy='6' r='2' fill='%232b2b2b'/><circle cx='6' cy='13' r='2' fill='%232b2b2b'/><circle cx='6' cy='20' r='2' fill='%232b2b2b'/><circle cx='6' cy='27' r='2' fill='%232b2b2b'/></svg>">
 </head>
 <body>
 
@@ -155,6 +156,7 @@
 <script>
     const platenStepSpeed = 80;
     const wrapper = document.getElementById('platen-feed-wrapper');
+    const navClip = document.querySelector('.nav-clip-container');
     const lines = document.querySelectorAll('.printed-line');
     
     const lineHeightPx = parseFloat(getComputedStyle(document.documentElement).fontSize) * 1.2;
@@ -172,6 +174,8 @@
             if (index === lines.length - 1) {
                 setTimeout(() => {
                     wrapper.style.transform = 'none';
+                    // Drop the Post-it note down once paper feed reaches the top
+                    navClip.classList.add('ready');
                 }, 200);
             }
         }, index * platenStepSpeed);
